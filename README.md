@@ -8,7 +8,7 @@ ESLint rule to disallow emoji characters in code.
 
 ## Requirements
 
-- Node.js >= 18.12.0
+- Node.js >= 18.18.0
 - ESLint >= 8.0.0
 
 > **Note**: This package is ESM-only (v2.0.0+). If you need CommonJS support, use v1.x.
