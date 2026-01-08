@@ -3,10 +3,18 @@
  * @author Raanan Avidor
  */
 
-"use strict";
+import { RuleTester } from "eslint";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const { RuleTester } = require("eslint");
-const rule = require("../lib/rules/no-emoji");
+import rule from "../lib/rules/no-emoji.js";
+import plugin from "../lib/index.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const pkg = JSON.parse(
+  readFileSync(join(__dirname, "..", "package.json"), "utf8")
+);
 
 const ruleTester = new RuleTester({
   languageOptions: {
@@ -355,9 +363,6 @@ ruleTester.run("no-emoji", rule, {
 
 // Additional test to verify the plugin exports
 describe("Plugin exports", () => {
-  const plugin = require("../lib/index");
-  const pkg = require("../package.json");
-
   test("exports meta information synced with package.json", () => {
     expect(plugin.meta.name).toBe(pkg.name);
     expect(plugin.meta.version).toBe(pkg.version);

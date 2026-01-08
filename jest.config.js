@@ -1,6 +1,4 @@
-"use strict";
-
-module.exports = {
+export default {
   testEnvironment: "node",
   testMatch: ["**/tests/**/*.test.js"],
   collectCoverageFrom: [
@@ -17,5 +15,7 @@ module.exports = {
       statements: 80
     }
   },
-  verbose: true
+  verbose: true,
+  // ESM support
+  transform: {}
 };

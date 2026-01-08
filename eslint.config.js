@@ -1,12 +1,10 @@
-"use strict";
+import eslintPluginPlugin from "eslint-plugin-eslint-plugin";
+import nodePlugin from "eslint-plugin-n";
+import globals from "globals";
 
-const eslintPluginPlugin = require("eslint-plugin-eslint-plugin");
-const nodePlugin = require("eslint-plugin-n");
-const globals = require("globals");
-
-module.exports = [
-  // ESLint plugin recommended rules
-  eslintPluginPlugin.configs["flat/recommended"],
+export default [
+  // ESLint plugin recommended rules (v7 uses flat config by default)
+  eslintPluginPlugin.configs.recommended,
 
   // Node.js plugin recommended rules
   nodePlugin.configs["flat/recommended"],
@@ -16,7 +14,7 @@ module.exports = [
     files: ["lib/**/*.js", "tests/**/*.js"],
     languageOptions: {
       ecmaVersion: 2020,
-      sourceType: "commonjs",
+      sourceType: "module",
       globals: {
         ...globals.node,
         ...globals.jest
@@ -30,7 +28,7 @@ module.exports = [
       "curly": ["error", "all"],
       "semi": ["error", "always"],
       "quotes": ["error", "double", { avoidEscape: true }],
-      // Allow requires in CommonJS
+      // Allow ESM syntax
       "n/no-unsupported-features/es-syntax": "off"
     }
   }
