@@ -7,12 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-01-08
+
+### Fixed
+
+- Corrected minimum Node.js version to 18.18.0 (matches ESLint 9 requirements)
+
 ## [2.0.0] - 2026-01-08
 
 ### Changed
 
 - **BREAKING**: Package is now ESM-only. Use `import` instead of `require()`
-- **BREAKING**: Minimum Node.js version is now 18.12.0 (was 16.0.0)
+- **BREAKING**: Minimum Node.js version is now 18.18.0 (was 16.0.0)
 - Upgraded to ESLint 9 flat config for internal linting
 - Upgraded Jest from v29 to v30
 - Upgraded eslint-plugin-eslint-plugin from v6 to v7
@@ -41,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Keycap emojis
 - Pre-configured recommended configs for both legacy and flat config formats
 
-[Unreleased]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/ravidorr/eslint-plugin-no-emoji/releases/tag/v1.0.0
