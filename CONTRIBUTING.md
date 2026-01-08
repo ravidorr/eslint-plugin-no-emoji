@@ -45,7 +45,7 @@ Feature suggestions are welcome! Please:
 git clone https://github.com/YOUR_USERNAME/eslint-plugin-no-emoji.git
 cd eslint-plugin-no-emoji
 
-# Install dependencies
+# Install dependencies (this also sets up Git hooks)
 npm install
 
 # Run tests
@@ -56,6 +56,21 @@ npm run test:coverage
 
 # Run linter
 npm run lint
+```
+
+## Pre-commit Hooks
+
+This project uses [Husky](https://typicode.github.io/husky/) and [lint-staged](https://github.com/lint-staged/lint-staged) to enforce code quality before commits.
+
+When you commit, the following checks run automatically:
+- **ESLint** runs on staged `.js` files
+- **Tests with coverage** run to ensure 80% minimum coverage
+
+If any check fails, the commit is blocked. Fix the issues and try again.
+
+To bypass hooks in exceptional cases (not recommended):
+```bash
+git commit --no-verify -m "your message"
 ```
 
 ## Project Structure
