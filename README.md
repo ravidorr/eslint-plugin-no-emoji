@@ -6,6 +6,13 @@
 
 ESLint rule to disallow emoji characters in code.
 
+## Requirements
+
+- Node.js >= 18.12.0
+- ESLint >= 8.0.0
+
+> **Note**: This package is ESM-only (v2.0.0+). If you need CommonJS support, use v1.x.
+
 ## Installation
 
 ```bash
@@ -14,14 +21,14 @@ npm install eslint-plugin-no-emoji --save-dev
 
 ## Usage
 
-### ESLint 9.x (Flat Config)
+### ESLint 9.x (Flat Config) - Recommended
 
 In your `eslint.config.js`:
 
 ```js
-const noEmoji = require("eslint-plugin-no-emoji");
+import noEmoji from "eslint-plugin-no-emoji";
 
-module.exports = [
+export default [
   // Use the recommended flat config
   noEmoji.configs["flat/recommended"],
 
@@ -40,6 +47,8 @@ module.exports = [
 You can also use `noEmoji.configs.flat` as an alias.
 
 ### ESLint 8.x (Legacy Config)
+
+> **Note**: ESLint 8.x is deprecated. Consider upgrading to ESLint 9.x.
 
 In your `.eslintrc.js` or `.eslintrc.json`:
 
@@ -112,11 +121,6 @@ The rule detects all Unicode emoji characters including:
 - Emoji with skin tone modifiers
 - ZWJ (Zero Width Joiner) sequences
 - Keycap emojis
-
-## Compatibility
-
-- ESLint 8.x and 9.x
-- Node.js 18.12.0 or higher
 
 ## License
 
