@@ -1,5 +1,9 @@
 # eslint-plugin-no-emoji
 
+[![npm version](https://img.shields.io/npm/v/eslint-plugin-no-emoji.svg)](https://www.npmjs.com/package/eslint-plugin-no-emoji)
+[![CI](https://github.com/ravidorr/eslint-plugin-no-emoji/actions/workflows/ci.yml/badge.svg)](https://github.com/ravidorr/eslint-plugin-no-emoji/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ESLint rule to disallow emoji characters in code.
 
 ## Installation
