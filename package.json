@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-no-emoji",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "ESLint rule to disallow emoji characters in code",
   "type": "module",
   "exports": {
@@ -40,6 +40,7 @@
     "emoji-regex": "^10.3.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "eslint": "^9.39.2",
     "eslint-plugin-eslint-plugin": "^7.3.0",
     "eslint-plugin-n": "^17.15.0",

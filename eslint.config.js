@@ -1,8 +1,12 @@
+import js from "@eslint/js";
 import eslintPluginPlugin from "eslint-plugin-eslint-plugin";
 import nodePlugin from "eslint-plugin-n";
 import globals from "globals";
 
 export default [
+  // ESLint core recommended rules
+  js.configs.recommended,
+
   // ESLint plugin recommended rules (v7 uses flat config by default)
   eslintPluginPlugin.configs.recommended,
 
