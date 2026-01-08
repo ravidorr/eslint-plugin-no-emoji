@@ -1,0 +1,39 @@
+# Source control
+.git/
+.gitignore
+.github/
+
+# Tests
+tests/
+*.test.js
+*.spec.js
+coverage/
+jest.config.js
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Development files
+.eslintrc*
+.prettierrc*
+.editorconfig
+
+# Documentation source (README is included)
+docs/
+
+# CI/CD
+.travis.yml
+.circleci/
+.github/
+
+# Misc
+*.log
+tmp/
+temp/
