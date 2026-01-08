@@ -116,7 +116,7 @@ The rule detects all Unicode emoji characters including:
 ## Compatibility
 
 - ESLint 8.x and 9.x
-- Node.js 16.0.0 or higher
+- Node.js 18.12.0 or higher
 
 ## License
 
