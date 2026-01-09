@@ -1,8 +1,15 @@
 # eslint-plugin-no-emoji
 
 [![npm version](https://img.shields.io/npm/v/eslint-plugin-no-emoji.svg)](https://www.npmjs.com/package/eslint-plugin-no-emoji)
+[![npm downloads](https://img.shields.io/npm/dm/eslint-plugin-no-emoji.svg)](https://www.npmjs.com/package/eslint-plugin-no-emoji)
 [![CI](https://github.com/ravidorr/eslint-plugin-no-emoji/actions/workflows/ci.yml/badge.svg)](https://github.com/ravidorr/eslint-plugin-no-emoji/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/ravidorr/eslint-plugin-no-emoji/branch/main/graph/badge.svg)](https://codecov.io/gh/ravidorr/eslint-plugin-no-emoji)
+[![npm bundle size](https://img.shields.io/bundlephobia/min/eslint-plugin-no-emoji)](https://bundlephobia.com/package/eslint-plugin-no-emoji)
+[![node](https://img.shields.io/node/v/eslint-plugin-no-emoji.svg)](https://www.npmjs.com/package/eslint-plugin-no-emoji)
+[![ESLint](https://img.shields.io/badge/ESLint->=8.0.0-4B32C3?logo=eslint)](https://eslint.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ravidorr/eslint-plugin-no-emoji/pulls)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/ravidorr/eslint-plugin-no-emoji/graphs/commit-activity)
 
 ESLint rule to disallow emoji characters in code.
 
