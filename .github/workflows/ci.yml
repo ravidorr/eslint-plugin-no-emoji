@@ -56,3 +56,10 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint --if-present
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage/lcov.info
+          fail_ci_if_error: false
