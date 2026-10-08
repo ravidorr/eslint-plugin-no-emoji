@@ -228,9 +228,12 @@ test("passes labels through the command-line interface and fails invalid metadat
 });
 
 test("configures guarded default-branch npm trusted publishing", () => {
+  const ciWorkflow = readFileSync(".github/workflows/ci.yml", "utf8");
   const publishWorkflow = readFileSync(".github/workflows/publish.yml", "utf8");
   const releaseWorkflow = readFileSync(".github/workflows/release-metadata.yml", "utf8");
 
+  assert.match(ciWorkflow, /Run release metadata validator tests/);
+  assert.match(ciWorkflow, /fetch-depth: 0/);
   assert.match(publishWorkflow, /types: \[closed\]/);
   assert.match(publishWorkflow, /github\.event\.pull_request\.merged == true/);
   assert.match(
