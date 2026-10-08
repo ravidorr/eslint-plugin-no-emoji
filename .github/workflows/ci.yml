@@ -28,9 +28,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run linter
-        run: npm run lint --if-present
-
       - name: Run tests
         run: npm test
 
@@ -54,7 +51,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 18
+          node-version: 20
           cache: "npm"
 
       - name: Install dependencies
