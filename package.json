@@ -20,7 +20,8 @@
     "validate:security-policy": "node scripts/validate-security-policy-version.mjs",
     "test:security-policy": "node --test scripts/validate-security-policy-version.test.mjs",
     "validate:release-metadata": "node scripts/validate-release-metadata.mjs",
-    "test:release-metadata": "node --test scripts/validate-release-metadata.test.mjs"
+    "test:release-metadata": "node --test scripts/validate-release-metadata.test.mjs",
+    "test:pull-request-approval": "node --test scripts/check-pull-request-approval.test.mjs"
   },
   "keywords": [
     "eslint",
