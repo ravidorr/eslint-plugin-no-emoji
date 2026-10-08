@@ -25,6 +25,24 @@ test("accepts the exact package version", () => {
   );
 });
 
+test("rejects policies that support additional releases", () => {
+  const policy = `## Supported Versions
+
+| Version | Supported |
+| ------- | --------- |
+| 1.2.3 | ${supportedStatus} |
+| 1.2.2 | ${supportedStatus} |
+`;
+
+  assert.deepEqual(
+    validateSecurityPolicyVersion('{"version":"1.2.3"}', policy),
+    {
+      valid: false,
+      error: "SECURITY.md supports additional versions. Only the package version may be supported.",
+    },
+  );
+});
+
 test("accepts SemVer build metadata when the policy matches exactly", () => {
   const version = "1.2.3+build.4";
   assert.deepEqual(

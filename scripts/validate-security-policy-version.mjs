@@ -33,15 +33,28 @@ export function validateSecurityPolicyVersion(packageJson, securityPolicy) {
   const rows = [...table.groups.rows.matchAll(VERSION_ROW)];
   const matchingRow = rows.find(([, rowVersion]) => rowVersion === version);
 
-  if (matchingRow?.[2].trim() === SUPPORTED_STATUS) {
-    return { valid: true, version };
+  if (matchingRow) {
+    if (matchingRow[2].trim() !== SUPPORTED_STATUS) {
+      return {
+        valid: false,
+        error: `SECURITY.md declares ${version} as unsupported. Mark the package version as supported.`,
+      };
+    }
+  }
+
+  const additionalSupportedVersion = rows.find(
+    ([, rowVersion, status]) => rowVersion !== version && status.trim() === SUPPORTED_STATUS,
+  )?.[1];
+
+  if (additionalSupportedVersion) {
+    return {
+      valid: false,
+      error: "SECURITY.md supports additional versions. Only the package version may be supported.",
+    };
   }
 
   if (matchingRow) {
-    return {
-      valid: false,
-      error: `SECURITY.md declares ${version} as unsupported. Mark the package version as supported.`,
-    };
+    return { valid: true, version };
   }
 
   const supportedVersion = rows.find(([, , status]) => status.trim() === SUPPORTED_STATUS)?.[1];
