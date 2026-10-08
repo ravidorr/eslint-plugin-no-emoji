@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -155,4 +156,22 @@ test("requires a non-empty changelog section for the release version", () => {
   assert.equal(validateChangelogForVersion(changelogFor("2.0.3"), "2.0.3").valid, true);
   assert.equal(validateChangelogForVersion(changelogFor("2.0.3", ""), "2.0.3").valid, false);
   assert.equal(validateChangelogForVersion(changelogFor("2.0.2"), "2.0.3").valid, false);
+});
+
+test("configures guarded default-branch npm trusted publishing", () => {
+  const publishWorkflow = readFileSync(".github/workflows/publish.yml", "utf8");
+  const releaseWorkflow = readFileSync(".github/workflows/release-metadata.yml", "utf8");
+
+  assert.match(publishWorkflow, /types: \[closed\]/);
+  assert.match(publishWorkflow, /github\.event\.pull_request\.merged == true/);
+  assert.match(
+    publishWorkflow,
+    /github\.event\.pull_request\.base\.ref == github\.event\.repository\.default_branch/,
+  );
+  assert.match(publishWorkflow, /id-token: write/);
+  assert.match(publishWorkflow, /npm publish --provenance --access public/);
+  assert.match(publishWorkflow, /check-pull-request-approval\.mjs/);
+  assert.match(publishWorkflow, /validate-release-metadata\.mjs/);
+  assert.match(releaseWorkflow, /types: \[opened, synchronize, reopened, labeled, unlabeled\]/);
+  assert.match(releaseWorkflow, /validate-release-metadata\.mjs/);
 });

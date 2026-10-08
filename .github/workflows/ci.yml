@@ -37,6 +37,15 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:coverage --if-present
 
+      - name: Run security policy validator tests
+        run: npm run test:security-policy
+
+      - name: Run release metadata validator tests
+        run: npm run test:release-metadata
+
+      - name: Run pull request approval validator tests
+        run: npm run test:pull-request-approval
+
       - name: Upload coverage to Codecov
         if: matrix.node-version == 20
         uses: codecov/codecov-action@v5
