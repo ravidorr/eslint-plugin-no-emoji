@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
 import {
   RELEASE_LABEL_MAJOR,
@@ -16,6 +19,9 @@ import {
 
 const basePackageJson = '{"version":"2.0.2"}';
 const supportedStatus = String.fromCodePoint(0x2713);
+const releaseMetadataScript = fileURLToPath(
+  new URL("./validate-release-metadata.mjs", import.meta.url),
+);
 
 const policyFor = (version) => `## Supported Versions
 
@@ -46,6 +52,27 @@ ${bullet}
 
 ## [2.0.2] - 2026-01-08
 `;
+
+function runGit(cwd, args) {
+  return execFileSync("git", ["-C", cwd, ...args], { encoding: "utf8" });
+}
+
+function createReleaseMetadataFixture() {
+  const directory = mkdtempSync(join(tmpdir(), "release-metadata-"));
+
+  runGit(directory, ["init", "--initial-branch=main"]);
+  runGit(directory, ["config", "user.email", "test@example.com"]);
+  runGit(directory, ["config", "user.name", "Test User"]);
+  writeFileSync(join(directory, "package.json"), basePackageJson);
+  runGit(directory, ["add", "package.json"]);
+  runGit(directory, ["commit", "-m", "base release"]);
+  writeFileSync(join(directory, "package.json"), '{"version":"2.0.3"}');
+  writeFileSync(join(directory, "package-lock.json"), lockFor("2.0.3"));
+  writeFileSync(join(directory, "CHANGELOG.md"), changelogFor("2.0.3"));
+  writeFileSync(join(directory, "SECURITY.md"), policyFor("2.0.3"));
+
+  return directory;
+}
 
 test("defaults to a patch release without labels", () => {
   assert.deepEqual(releaseTypeFromLabels([]), { releaseType: "patch" });
@@ -181,41 +208,51 @@ test("requires a non-empty changelog section for the release version", () => {
   assert.equal(validateChangelogForVersion(changelogFor("2.0.2"), "2.0.3").valid, false);
 });
 
-test("validates current release metadata from git and fails unreadable base refs", () => {
-  assert.deepEqual(validateReleaseMetadataFromGit({ baseRef: "origin/main" }), {
+test("validates release metadata from an isolated git fixture", (t) => {
+  const fixture = createReleaseMetadataFixture();
+  t.after(() => rmSync(fixture, { force: true, recursive: true }));
+
+  assert.deepEqual(validateReleaseMetadataFromGit({ baseRef: "HEAD", cwd: fixture }), {
     valid: true,
     version: "2.0.3",
     releaseType: "patch",
   });
   assert.match(
-    validateReleaseMetadataFromGit({ baseRef: "missing-base-ref" }).error,
+    validateReleaseMetadataFromGit({ baseRef: "missing-base-ref", cwd: fixture }).error,
     /Unable to read release metadata files/,
   );
 });
 
-test("validates release metadata through the command-line interface", () => {
+test("validates release metadata through the command-line interface", (t) => {
+  const fixture = createReleaseMetadataFixture();
+  t.after(() => rmSync(fixture, { force: true, recursive: true }));
+
   const output = execFileSync(
     process.execPath,
-    ["scripts/validate-release-metadata.mjs", "--base-ref", "origin/main"],
-    { encoding: "utf8" },
+    [releaseMetadataScript, "--base-ref", "HEAD"],
+    { cwd: fixture, encoding: "utf8" },
   );
 
   assert.match(output, /Release metadata is valid for 2\.0\.3 \(patch\)/);
 });
 
-test("passes labels through the command-line interface and fails invalid metadata", () => {
+test("passes labels through the command-line interface and fails invalid metadata", (t) => {
+  const fixture = createReleaseMetadataFixture();
+  t.after(() => rmSync(fixture, { force: true, recursive: true }));
+
   const run = (...args) =>
-    spawnSync(process.execPath, ["scripts/validate-release-metadata.mjs", ...args], {
+    spawnSync(process.execPath, [releaseMetadataScript, ...args], {
+      cwd: fixture,
       encoding: "utf8",
     });
 
-  const minorRelease = run("--base-ref", "origin/main", "--labels", RELEASE_LABEL_MINOR);
+  const minorRelease = run("--base-ref", "HEAD", "--labels", RELEASE_LABEL_MINOR);
   assert.equal(minorRelease.status, 1);
   assert.match(minorRelease.stderr, /Expected version 2\.1\.0 for a minor release/);
 
   const conflictingLabels = run(
     "--base-ref",
-    "origin/main",
+    "HEAD",
     "--labels",
     `${RELEASE_LABEL_MINOR},${RELEASE_LABEL_MAJOR}`,
   );
@@ -233,6 +270,7 @@ test("configures guarded default-branch npm trusted publishing", () => {
   const releaseWorkflow = readFileSync(".github/workflows/release-metadata.yml", "utf8");
 
   assert.match(ciWorkflow, /Run release metadata validator tests/);
+  assert.match(ciWorkflow, /Run release base reference tests/);
   assert.match(ciWorkflow, /fetch-depth: 0/);
   assert.match(publishWorkflow, /types: \[closed\]/);
   assert.match(publishWorkflow, /github\.event\.pull_request\.merged == true/);
@@ -243,12 +281,15 @@ test("configures guarded default-branch npm trusted publishing", () => {
   assert.match(publishWorkflow, /id-token: write/);
   assert.match(publishWorkflow, /group: npm-publish/);
   assert.match(publishWorkflow, /ref: \$\{\{ github\.event\.pull_request\.merge_commit_sha \}\}/);
-  assert.match(publishWorkflow, /git rev-parse "\$\{MERGE_COMMIT_SHA\}\^"/);
   assert.match(publishWorkflow, /npm publish --provenance --access public/);
   assert.match(publishWorkflow, /check-pull-request-approval\.mjs/);
+  assert.match(publishWorkflow, /find-release-base-ref\.mjs/);
   assert.match(publishWorkflow, /validate-release-metadata\.mjs/);
   assert.match(publishWorkflow, /RELEASE_LABELS:/);
-  assert.match(publishWorkflow, /BASE_REF="\$\(git rev-parse "\$\{MERGE_COMMIT_SHA\}\^"\)"/);
+  assert.match(
+    publishWorkflow,
+    /BASE_REF="\$\(node scripts\/find-release-base-ref\.mjs "\$MERGE_COMMIT_SHA"\)"/,
+  );
   assert.match(publishWorkflow, /npm view "eslint-plugin-no-emoji@\$\{VERSION\}" version/);
   assert.match(releaseWorkflow, /types: \[opened, synchronize, reopened, labeled, unlabeled\]/);
   assert.match(releaseWorkflow, /validate-release-metadata\.mjs/);

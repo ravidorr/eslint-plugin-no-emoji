@@ -39,6 +39,9 @@ jobs:
       - name: Run security policy validator tests
         run: npm run test:security-policy
 
+      - name: Run release base reference tests
+        run: npm run test:release-base-ref
+
       - name: Run release metadata validator tests
         run: npm run test:release-metadata
 

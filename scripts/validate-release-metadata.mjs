@@ -1,5 +1,6 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
@@ -168,8 +169,9 @@ export function validateReleaseMetadata({
   return { valid: true, version: headVersion, releaseType: labelResult.releaseType };
 }
 
-function readGitFile(ref, path) {
+function readGitFile(ref, path, cwd) {
   return execFileSync("git", ["show", `${ref}:${path}`], {
+    cwd,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "ignore"],
   });
@@ -179,14 +181,14 @@ function parseLabelsArgument(rawLabels) {
   return rawLabels ? rawLabels.split(",").map((label) => label.trim()).filter(Boolean) : [];
 }
 
-export function validateReleaseMetadataFromGit({ baseRef, labels = [] }) {
+export function validateReleaseMetadataFromGit({ baseRef, labels = [], cwd = process.cwd() }) {
   try {
     return validateReleaseMetadata({
-      basePackageJson: readGitFile(baseRef, "package.json"),
-      headPackageJson: readFileSync("package.json", "utf8"),
-      headLockJson: readFileSync("package-lock.json", "utf8"),
-      headChangelog: readFileSync("CHANGELOG.md", "utf8"),
-      headSecurityPolicy: readFileSync("SECURITY.md", "utf8"),
+      basePackageJson: readGitFile(baseRef, "package.json", cwd),
+      headPackageJson: readFileSync(join(cwd, "package.json"), "utf8"),
+      headLockJson: readFileSync(join(cwd, "package-lock.json"), "utf8"),
+      headChangelog: readFileSync(join(cwd, "CHANGELOG.md"), "utf8"),
+      headSecurityPolicy: readFileSync(join(cwd, "SECURITY.md"), "utf8"),
       labels,
     });
   } catch (error) {

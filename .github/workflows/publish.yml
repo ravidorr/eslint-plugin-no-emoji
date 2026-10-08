@@ -44,7 +44,7 @@ jobs:
           MERGE_COMMIT_SHA: ${{ github.event.pull_request.merge_commit_sha }}
           RELEASE_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
         run: |
-          BASE_REF="$(git rev-parse "${MERGE_COMMIT_SHA}^")"
+          BASE_REF="$(node scripts/find-release-base-ref.mjs "$MERGE_COMMIT_SHA")"
           node scripts/validate-release-metadata.mjs \
             --base-ref "$BASE_REF" \
             --labels "$RELEASE_LABELS"
@@ -58,6 +58,7 @@ jobs:
           npm run test:coverage
           npm run test:pull-request-approval
           npm run test:security-policy
+          npm run test:release-base-ref
           npm run test:release-metadata
 
       - name: Publish to npm
