@@ -1,4 +1,8 @@
 {
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/ravidorr"
+  },
   "name": "eslint-plugin-no-emoji",
   "version": "2.0.3",
   "description": "ESLint rule to disallow emoji characters in code",
