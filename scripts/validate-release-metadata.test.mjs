@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { execFileSync, spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
@@ -10,6 +11,7 @@ import {
   releaseTypeFromLabels,
   validateChangelogForVersion,
   validateReleaseMetadata,
+  validateReleaseMetadataFromGit,
 } from "./validate-release-metadata.mjs";
 
 const basePackageJson = '{"version":"2.0.2"}';
@@ -144,6 +146,8 @@ test("rejects inconsistent release artifacts", () => {
 
 test("requires matching root package-lock versions", () => {
   assert.equal(readLockfilePackageVersion(lockFor("2.0.3")), "2.0.3");
+  assert.equal(readLockfilePackageVersion("not JSON"), null);
+  assert.equal(readLockfilePackageVersion('{"version":"2.0.3","packages":{}}'), null);
   assert.equal(
     readLockfilePackageVersion(
       JSON.stringify({ version: "2.0.3", packages: { "": { version: "2.0.2" } } }),
@@ -152,10 +156,75 @@ test("requires matching root package-lock versions", () => {
   );
 });
 
+test("rejects malformed base and head package versions", () => {
+  const metadata = {
+    basePackageJson,
+    headPackageJson: '{"version":"2.0.3"}',
+    headLockJson: lockFor("2.0.3"),
+    headChangelog: changelogFor("2.0.3"),
+    headSecurityPolicy: policyFor("2.0.3"),
+  };
+
+  assert.match(
+    validateReleaseMetadata({ ...metadata, basePackageJson: '{"version":"invalid"}' }).error,
+    /Base package\.json/,
+  );
+  assert.match(
+    validateReleaseMetadata({ ...metadata, headPackageJson: '{"version":"invalid"}' }).error,
+    /package\.json must contain a stable SemVer/,
+  );
+});
+
 test("requires a non-empty changelog section for the release version", () => {
   assert.equal(validateChangelogForVersion(changelogFor("2.0.3"), "2.0.3").valid, true);
   assert.equal(validateChangelogForVersion(changelogFor("2.0.3", ""), "2.0.3").valid, false);
   assert.equal(validateChangelogForVersion(changelogFor("2.0.2"), "2.0.3").valid, false);
+});
+
+test("validates current release metadata from git and fails unreadable base refs", () => {
+  assert.deepEqual(validateReleaseMetadataFromGit({ baseRef: "origin/main" }), {
+    valid: true,
+    version: "2.0.3",
+    releaseType: "patch",
+  });
+  assert.match(
+    validateReleaseMetadataFromGit({ baseRef: "missing-base-ref" }).error,
+    /Unable to read release metadata files/,
+  );
+});
+
+test("validates release metadata through the command-line interface", () => {
+  const output = execFileSync(
+    process.execPath,
+    ["scripts/validate-release-metadata.mjs", "--base-ref", "origin/main"],
+    { encoding: "utf8" },
+  );
+
+  assert.match(output, /Release metadata is valid for 2\.0\.3 \(patch\)/);
+});
+
+test("passes labels through the command-line interface and fails invalid metadata", () => {
+  const run = (...args) =>
+    spawnSync(process.execPath, ["scripts/validate-release-metadata.mjs", ...args], {
+      encoding: "utf8",
+    });
+
+  const minorRelease = run("--base-ref", "origin/main", "--labels", RELEASE_LABEL_MINOR);
+  assert.equal(minorRelease.status, 1);
+  assert.match(minorRelease.stderr, /Expected version 2\.1\.0 for a minor release/);
+
+  const conflictingLabels = run(
+    "--base-ref",
+    "origin/main",
+    "--labels",
+    `${RELEASE_LABEL_MINOR},${RELEASE_LABEL_MAJOR}`,
+  );
+  assert.equal(conflictingLabels.status, 1);
+  assert.match(conflictingLabels.stderr, /Use only one release label/);
+
+  const invalidBase = run("--base-ref", "missing-base-ref");
+  assert.equal(invalidBase.status, 1);
+  assert.match(invalidBase.stderr, /Unable to read release metadata files/);
 });
 
 test("configures guarded default-branch npm trusted publishing", () => {
@@ -169,9 +238,16 @@ test("configures guarded default-branch npm trusted publishing", () => {
     /github\.event\.pull_request\.base\.ref == github\.event\.repository\.default_branch/,
   );
   assert.match(publishWorkflow, /id-token: write/);
+  assert.match(publishWorkflow, /group: npm-publish/);
+  assert.match(publishWorkflow, /ref: \$\{\{ github\.event\.pull_request\.merge_commit_sha \}\}/);
+  assert.match(publishWorkflow, /git rev-parse "\$\{MERGE_COMMIT_SHA\}\^"/);
   assert.match(publishWorkflow, /npm publish --provenance --access public/);
   assert.match(publishWorkflow, /check-pull-request-approval\.mjs/);
   assert.match(publishWorkflow, /validate-release-metadata\.mjs/);
+  assert.match(publishWorkflow, /RELEASE_LABELS:/);
+  assert.match(publishWorkflow, /BASE_REF="\$\(git rev-parse "\$\{MERGE_COMMIT_SHA\}\^"\)"/);
+  assert.match(publishWorkflow, /npm view "eslint-plugin-no-emoji@\$\{VERSION\}" version/);
   assert.match(releaseWorkflow, /types: \[opened, synchronize, reopened, labeled, unlabeled\]/);
   assert.match(releaseWorkflow, /validate-release-metadata\.mjs/);
+  assert.match(releaseWorkflow, /RELEASE_LABELS:/);
 });

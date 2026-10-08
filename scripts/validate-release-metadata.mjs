@@ -169,7 +169,10 @@ export function validateReleaseMetadata({
 }
 
 function readGitFile(ref, path) {
-  return execFileSync("git", ["show", `${ref}:${path}`], { encoding: "utf8" });
+  return execFileSync("git", ["show", `${ref}:${path}`], {
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "ignore"],
+  });
 }
 
 function parseLabelsArgument(rawLabels) {

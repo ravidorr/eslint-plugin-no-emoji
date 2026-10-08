@@ -129,6 +129,16 @@ The rule detects all Unicode emoji characters including:
 - ZWJ (Zero Width Joiner) sequences
 - Keycap emojis
 
+## Releasing
+
+Pull requests must include the next version, a `CHANGELOG.md` entry, and an updated
+`SECURITY.md` supported version. Patch releases are the default; add the
+`release:minor` or `release:major` label when needed.
+
+After an approved pull request merges into the default branch, GitHub Actions
+publishes to npm. Configure npm trusted publishing once for this repository before
+the first release.
+
 ## License
 
 MIT

@@ -20,7 +20,7 @@ export function hasValidApproval({ reviews, authorLogin, repositoryOwnerLogin })
   }
 
   return [...latestReviewByUser.entries()].some(
-    ([login, state]) => state === "APPROVED" && login !== authorLogin,
+    ([login, state]) => state === "APPROVED" && login.toLowerCase() !== authorLogin?.toLowerCase(),
   );
 }
 
@@ -39,6 +39,24 @@ async function github({ apiBase, repository, token }, path) {
   }
 
   return response.json();
+}
+
+async function githubPages(client, path) {
+  const reviews = [];
+
+  for (let page = 1; ; page += 1) {
+    const pageReviews = await github(client, `${path}?per_page=100&page=${page}`);
+
+    if (!Array.isArray(pageReviews)) {
+      throw new Error(`GitHub API ${path} returned an invalid reviews response.`);
+    }
+
+    reviews.push(...pageReviews);
+
+    if (pageReviews.length < 100) {
+      return reviews;
+    }
+  }
 }
 
 export async function checkPullRequestApproval({
@@ -63,7 +81,7 @@ export async function checkPullRequestApproval({
 
   const client = { apiBase, repository, token };
   const pull = await github(client, `/pulls/${pullNumber}`);
-  const reviews = await github(client, `/pulls/${pullNumber}/reviews`);
+  const reviews = await githubPages(client, `/pulls/${pullNumber}/reviews`);
 
   return hasValidApproval({
     reviews,
