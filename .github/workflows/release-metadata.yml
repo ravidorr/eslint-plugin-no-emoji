@@ -1,0 +1,30 @@
+name: Release Metadata
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate release metadata
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Validate release metadata
+        env:
+          RELEASE_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+        run: |
+          node scripts/validate-release-metadata.mjs \
+            --base-ref "${{ github.event.pull_request.base.sha }}" \
+            --labels "$RELEASE_LABELS"

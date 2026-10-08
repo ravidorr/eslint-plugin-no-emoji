@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
@@ -33,6 +35,18 @@ jobs:
 
       - name: Run tests with coverage
         run: npm run test:coverage --if-present
+
+      - name: Run security policy validator tests
+        run: npm run test:security-policy
+
+      - name: Run release base reference tests
+        run: npm run test:release-base-ref
+
+      - name: Run release metadata validator tests
+        run: npm run test:release-metadata
+
+      - name: Run pull request approval validator tests
+        run: npm run test:pull-request-approval
 
       - name: Upload coverage to Codecov
         if: matrix.node-version == 20

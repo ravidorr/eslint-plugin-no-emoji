@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.3] - 2026-10-08
+
+### Added
+
+- Added release metadata validation and guarded npm trusted publishing for approved pull requests.
+
 ## [2.0.2] - 2026-01-08
 
 ### Fixed
@@ -53,7 +59,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Keycap emojis
 - Pre-configured recommended configs for both legacy and flat config formats
 
-[Unreleased]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.2...HEAD
+[Unreleased]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.3...HEAD
+[2.0.3]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v1.0.0...v2.0.0
