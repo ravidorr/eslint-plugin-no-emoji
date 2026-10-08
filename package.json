@@ -16,7 +16,9 @@
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "lint": "eslint lib tests",
     "lint:fix": "eslint lib tests --fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "validate:security-policy": "node scripts/validate-security-policy-version.mjs",
+    "test:security-policy": "node --test scripts/validate-security-policy-version.test.mjs"
   },
   "keywords": [
     "eslint",

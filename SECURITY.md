@@ -2,10 +2,12 @@
 
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.x.x   | Yes                |
+Security fixes are provided for the latest release only.
 
+| Version | Supported |
+| ------- | --------- |
+| 2.0.2 | ✓ |
+| Earlier releases | ✘ |
 ## Reporting a Vulnerability
 
 If you discover a security vulnerability in eslint-plugin-no-emoji, please report it responsibly.
