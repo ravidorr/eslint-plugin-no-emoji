@@ -47,7 +47,7 @@
   },
   "homepage": "https://github.com/ravidorr/eslint-plugin-no-emoji#readme",
   "dependencies": {
-    "emoji-regex": "^10.3.0"
+    "emoji-regex": "^11.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
