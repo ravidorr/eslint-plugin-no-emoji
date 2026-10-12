@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.9] - 2026-10-13
+
+### Changed
+
+- Updated the Codecov GitHub Action.
+
 ## [2.0.8] - 2026-10-13
 
 ### Changed
@@ -89,7 +95,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Keycap emojis
 - Pre-configured recommended configs for both legacy and flat config formats
 
-[Unreleased]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.8...HEAD
+[Unreleased]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.9...HEAD
+[2.0.9]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.8...v2.0.9
 [2.0.8]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.7...v2.0.8
 [2.0.7]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.6...v2.0.7
 [2.0.6]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.5...v2.0.6
