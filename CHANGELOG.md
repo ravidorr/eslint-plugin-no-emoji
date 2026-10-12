@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.5] - 2026-10-12
+
+### Changed
+
+- Updated transitive `picomatch` dependencies.
+
 ## [2.0.4] - 2026-10-11
 
 ### Changed
@@ -65,7 +71,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Keycap emojis
 - Pre-configured recommended configs for both legacy and flat config formats
 
-[Unreleased]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.3...HEAD
+[Unreleased]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.5...HEAD
+[2.0.5]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.4...v2.0.5
+[2.0.4]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.3...v2.0.4
 [2.0.3]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.0...v2.0.1
