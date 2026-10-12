@@ -4,7 +4,7 @@
     "url": "https://github.com/sponsors/ravidorr"
   },
   "name": "eslint-plugin-no-emoji",
-  "version": "2.0.14",
+  "version": "2.0.15",
   "description": "ESLint rule to disallow emoji characters in code",
   "type": "module",
   "exports": {
@@ -47,7 +47,7 @@
   },
   "homepage": "https://github.com/ravidorr/eslint-plugin-no-emoji#readme",
   "dependencies": {
-    "emoji-regex": "^10.3.0"
+    "emoji-regex": "^11.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.15] - 2026-10-13
+
+### Changed
+
+- Updated `emoji-regex` to 11.0.0.
+
 ## [2.0.14] - 2026-10-13
 
 ### Changed
@@ -125,7 +131,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Keycap emojis
 - Pre-configured recommended configs for both legacy and flat config formats
 
-[Unreleased]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.14...HEAD
+[Unreleased]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.15...HEAD
+[2.0.15]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.14...v2.0.15
 [2.0.14]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.13...v2.0.14
 [2.0.13]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.12...v2.0.13
 [2.0.12]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.11...v2.0.12
