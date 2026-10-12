@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.8] - 2026-10-13
+
+### Changed
+
+- Updated `@babel/core` dependency.
+
+## [2.0.7] - 2026-10-13
+
+### Changed
+
+- Updated transitive `flatted` dependency.
+
+## [2.0.6] - 2026-10-12
+
+### Changed
+
+- Updated transitive `minimatch` dependency.
+
+## [2.0.5] - 2026-10-12
+
+### Changed
+
+- Updated transitive `picomatch` dependencies.
+
 ## [2.0.4] - 2026-10-11
 
 ### Changed
@@ -65,7 +89,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Keycap emojis
 - Pre-configured recommended configs for both legacy and flat config formats
 
-[Unreleased]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.3...HEAD
+[Unreleased]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.8...HEAD
+[2.0.8]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.7...v2.0.8
+[2.0.7]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.6...v2.0.7
+[2.0.6]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.5...v2.0.6
+[2.0.5]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.4...v2.0.5
+[2.0.4]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.3...v2.0.4
 [2.0.3]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.0...v2.0.1
