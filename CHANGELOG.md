@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.21] - 2026-10-28
+
+### Changed
+
+- Updated `eslint` and `eslint-plugin-n` dev dependencies.
+
 ## [2.0.20] - 2026-10-13
 
 ### Changed
@@ -161,7 +167,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Keycap emojis
 - Pre-configured recommended configs for both legacy and flat config formats
 
-[Unreleased]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.20...HEAD
+[Unreleased]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.21...HEAD
+[2.0.21]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.20...v2.0.21
 [2.0.20]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.19...v2.0.20
 [2.0.19]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.18...v2.0.19
 [2.0.18]: https://github.com/ravidorr/eslint-plugin-no-emoji/compare/v2.0.17...v2.0.18
